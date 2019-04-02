@@ -16,3 +16,11 @@ Resources:
 		~/.pylog/
 	Archiving:
 		~/.attic/
+
+Tests:
+	clear && python3 tests/Tests.py
+	All information stored in ~/.pylog/logs/main.log
+	For Verbosity:
+		FLAGS['isVerbose'] = True
+		Set in /pytils/config.py or any desired test case.
+		TODO: Add an argument to make verbose from cmd line;
