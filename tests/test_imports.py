@@ -20,7 +20,10 @@ def tests():
 	mod         = "__init__.py" #module
 	ts          = [
 				test_logger(),
-				test_home()
+				test_home(),
+				#test_iso1, 				#TODO: Test `dateOnly`
+				#test_iso2, 				#TODO: Test `timeOnly`
+				#test_getPathsParent, 	#TODO: Test on /pytils/ dirs with test env.
 	]
 	T = Tests(ts, mod)
 	T.pprint()
