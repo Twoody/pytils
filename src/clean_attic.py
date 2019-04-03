@@ -19,7 +19,7 @@ def clean_attic(s, **kwargs):
 			LOGGER.info('\n\t\tREMOVING FILE:\t%s', s)
 		os.remove(s)
 	elif os.path.isdir(s):
-		is_safe = glob( ATTIC + HOME + '/Workspace/foo/IS_SAFE_TO_DELETE.txt*')		#Note wildcard appendage
+		is_safe = glob( ATTIC + s + '/IS_SAFE_TO_DELETE.txt*')		#Note wildcard appendage
 		if len(is_safe) > 0 and not os.path.isfile(is_safe[0]):
 			LOGGER.warning('Trying to remove directory which is not safe to remove...')
 			ret = False
