@@ -25,6 +25,22 @@ def sortLogs(logs):
 
 def consolidate_logs():
 	import re
+	'''Consolidate pylogs into one file.
+	File should be d(ate) and t(ime) stamped;
+	Remove all logs that we consolidated and start new.
+	'''
+	#TODO:
+	#	1. Structure appropriately:
+	#			make /archive/ dir;
+	#			make /archive/yyyy-mm-dd/ dirs
+	#			make /archive/yyyy-mm-dd/HHHH-MM.log files
+	#	2. Take in parameters and flags
+	#			-f(orce) for consolidating more than just pylogs
+	#			-t(arget) for target destination file
+	#			/dir/ param instead of 	PYLOG_LOGS
+	#			`newLog` to be dynamic
+	#			regex param for when we call `sortLogs`
+	D
 	ret = 0
 	if HAS_PYLOGS == False:
 		return -1
@@ -38,7 +54,6 @@ def consolidate_logs():
 		newLog = PYLOG_LOGS + '/' + dt + '.log'
 		curLogs = os.listdir(PYLOG_LOGS)
 		os.mkdir(src)							#GET JUST LOGS BEFORE MAKING DIR
-		#curLogs.sort(key=int)
 		myLogs = []
 		for i in range(0, len(curLogs)):
 			_log = PYLOG_LOGS + "/" + curLogs[i]
