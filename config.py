@@ -32,7 +32,8 @@ FLAGS={
 	'isLogging':True,
 	'isDebug':False,
 	'isStdO':False,
-	'isVerbose':False
+	'isVerbose':False,
+	'isPreserving':False
 }
 YESSES=[
 	'y',
