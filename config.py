@@ -3,10 +3,14 @@ import os
 import sys
 import sqlite3
 import logging
+import re
 from logging.config import fileConfig
 from datetime import datetime
 from shutil import copyfile
 from glob import glob
+
+#GENERAL GLOBAL VARIABLES
+ISO_RE = r'^(.*)(T)(.*)$'
 
 THIS_FILE=os.path.realpath( __file__ )
 HOME=os.path.expanduser("~")
@@ -50,10 +54,18 @@ NOS=[
 	'no thanks',
 ]
 
-def iso():
+def iso(*args):
 	#TDOD: Arguments for just YYYY-M-D or HH:MM
 	#		Could just have an hasYear, hasMonth, ...
+	if args is None or args==():
+		args = {}
+	else:
+		args = args[0]
 	ret = datetime.isoformat(datetime.now())
+	if 'dateOnly' in args and args['dateOnly'] == True:
+		ret = re.sub(ISO_RE, r'\1', ret)
+	elif 'timeOnly' in args and args['dateOnly'] == True:
+		ret = re.sub(ISO_RE, r'\2', ret)
 	return ret
 def get_paths_parents(s):
 	''' Get each path of source '''
