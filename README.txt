@@ -11,7 +11,7 @@ Dependencies:
 
 Resources:
 	Self:
-		/Users/tannerleewoody/Library/Python/3.7/lib/python/site-packages/pytils
+		$HOME/Library/Python/3.7/lib/python/site-packages/pytils
 	Loggins:
 		~/.pylog/
 	Archiving:
