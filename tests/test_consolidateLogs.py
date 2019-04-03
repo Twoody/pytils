@@ -6,8 +6,6 @@ from pytils.src.attic import attic
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''
-FLAGS['isVerbose'] = True
-
 def init_testEnv(d):
 	from pathlib import Path
 	#TODO: Make these paths relevant to pytils package...
@@ -20,6 +18,7 @@ def init_testEnv(d):
 
 	fs = [f1,f2,f3]
 	ss = [s1,s2,s3]
+	#TODO: dest support
 	dest = d + '/logs/'
 	if not os.path.exists(d):
 		os.mkdir(d)
@@ -49,7 +48,7 @@ def sortLogs(logs):
 	return ret 
 
 
-def consolidate_logs(d=None, args=None):
+def consolidate_logs(d=None, **kwargs):
 	import re
 	'''Consolidate pylogs into one file.
 	File should be d(ate) and t(ime) stamped;
@@ -69,66 +68,81 @@ def consolidate_logs(d=None, args=None):
 	ret = 0
 	if d is None:
 		d = PYLOG_LOGS
-	elif args is None:
-		args = {}
 	if HAS_PYLOGS == False:
 		return -1
+
+	OFLAGS={}									#GOING TO REVERT BACK TO DEFAULT AT END;
+	if kwargs is not None:
+		for key, value in kwargs.items():
+			if key in FLAGS:
+				OFLAGS[key] = FLAGS[key]
+				FLAGS[key] = value
 	dt   = iso()
+	dt	  = dt.replace('-','')
+	dt	  = dt.replace(':','-')
 	date = re.sub(ISO_RE, r'\1', dt)
 	time = re.sub(ISO_RE, r'\3', dt)
+	dt	  = dt.replace('T','_')
+
 	src  = d + '/' + date
 	if os.path.isdir(src):
 		if FLAGS['isQuite'] == False:
 			LOGGER.warning('\n\tLOGS ALREADY CONSOLIDATED FOR DAY')
-		ret = -1
-	else:
-		newLog  = src + '/' + time + 'consolidated.log'
-		curLogs = os.listdir(d)
-		myLogs  = []
-		if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
-			LOGGER.info('\n\tMAKING DIRECTORY:\n\t\t%s', src)
-		if os.path.isdir(src):
-			if FLAGS['isQuite'] == False:
-				LOGGER.critical('\n\tMSG 4873: DIRECTORY ALREADY EXISTS:\n\t\t%s', src)
-		elif os.path.isfile(src):
-			if FLAGS['isQuite'] == False:
-				LOGGER.critical('\n\tpytils NEEDS TO MAKE DIR WHERE FILE IS LOCATED:\n\t\t%s', src)
-		else:
-			os.mkdir(src)							#GET JUST LOGS BEFORE MAKING DIR
-		for i in range(0, len(curLogs)):
-			_log = d + "/" + curLogs[i]
-			if not os.path.isfile(_log):
-				continue
-			myLogs.append(_log)
 
-		myLogs = sortLogs(myLogs)
-		for log in myLogs:
-			hasMatch = re.search("^(.*)log(\.\d{1,2}){0,1}$", log)
-			if hasMatch:
-				if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
-					LOGGER.info('\n\tgood log:%s\t', log)
-				with open(log,'r') as fh:
-					all_lines = fh.readlines()
-					with open(newLog, "a") as myfile:
-						for line in all_lines:
-					 		myfile.write(line)
-						if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
-							LOGGER.info('\n\tWROTE TO:\n\t\t%s', myfile)
-				if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
-					LOGGER.info('\n\tCONSOLIDATED LOG:\n\t\t%s', log)
-				os.remove(log)
-				ret += 1
-			else:
-				if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
-					LOGGER.info('\n\tbad log:%s\t', log)
-	#attic(newLog)
+	newLog  = src + '/' + time + '.consolidated.log'
+	curLogs = os.listdir(d)
+	myLogs  = []
+	if FLAGS['isQuite'] == False:
+		LOGGER.info('\n\tMAKING DIRECTORY:\n\t\t%s', src)
+	if os.path.isdir(src):
+		if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
+			LOGGER.critical('\n\tMSG 4873: DIRECTORY ALREADY EXISTS:\n\t\t%s', src)
+	elif os.path.isfile(src):
+		if FLAGS['isQuite'] == False:
+			LOGGER.critical('\n\tpytils NEEDS TO MAKE DIR WHERE FILE IS LOCATED:\n\t\t%s', src)
+		#TODO: Handle the copy-pasta below better...
+		for key,value in OFLAGS.items():
+			FLAGS[key] = value
+		return -1
+	else:
+		os.mkdir(src)							#GET JUST LOGS BEFORE MAKING DIR
+	for i in range(0, len(curLogs)):
+		_log = d + "/" + curLogs[i]
+		if not os.path.isfile(_log):
+			continue
+		myLogs.append(_log)
+
+	myLogs = sortLogs(myLogs)
+	for log in myLogs:
+		hasMatch = re.search(LOG_RE, log)
+		if hasMatch:
+			if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
+				LOGGER.info('\n\tgood log:%s\t', log)
+			with open(log,'r') as fh:
+				all_lines = fh.readlines()
+				with open(newLog, "a") as myfile:
+					for line in all_lines:
+				 		myfile.write(line)
+					if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
+						LOGGER.info('\n\tWROTE TO:\n\t\t%s', myfile)
+			if FLAGS['isQuite'] == False:
+				LOGGER.info('\n\tCONSOLIDATED LOG:\n\t\t%s\n\tREMOVING OLD LOG:\n\t\t%s', newLog, log)
+			#TODO: -p(reserve) logs flag...
+			os.remove(log)
+			ret += 1
+		else:
+			if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
+				LOGGER.info('\n\tbad log:%s\t', log)
+	#TODO: Handle the copy-pasta below better...
+	for key,value in OFLAGS.items():
+		FLAGS[key] = value
 	return ret
 
 def test_consolidate():
 	d = MODULE_PATH + '/foo'
 	init_testEnv(d)
 	ret = True
-	cons = consolidate_logs(d)
+	cons = consolidate_logs(d, **{'isQuite':True})
 	if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
 		LOGGER.info('\n\t**** **** TEST ONE **** ****')
 	if  cons <1:
@@ -156,7 +170,6 @@ def tests():
 	T = Tests(ts, mod)
 	#T.pprint(**{'isQuite':True})
 	T.pprint()
-	#T.pprint()
 
 if __name__ == "__main__":
 	tests()
