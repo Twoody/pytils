@@ -25,13 +25,13 @@ def populate_attic(s, **kwargs):
 		if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
 			LOGGER.info('\n\tATTEMPTING ARCHIVE:\n\t\tSRC:\t%s\n\t\tDEST:\t%s', s, file_to_attic)
 		copyfile(s, file_to_attic)
-		if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
-			LOGGER.info('\n\tARCHIVED `%s`', s)
+		if FLAGS['isQuite'] == False:
+			LOGGER.info('\n\tARCHIVED\n\t\tSRC:\t%s\n\t\tDEST:\t%s', s, file_to_attic)
 		cnt += 1
 	elif os.path.isdir(s):
 		if not os.path.isdir(ATTIC + "/" +s):
 			build_attic(s)
-		if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
+		if FLAGS['isQuite'] == False:
 			LOGGER.info('\n\tARCHIVING DIR `%s`', s)
 		content = os.listdir(s)
 		for item in content:
