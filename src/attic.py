@@ -16,7 +16,7 @@ def attic(s, **kwargs):
 	abspath = get_abs_path(s) 				#Get absolute path
 	cnt     = 0									#Total Files saved to .attic/
 	if FLAGS['isQuite'] == False:
-		LOGGER.info('\n\t**** **** **** **** ATTIC PROCESS BEGINING **** **** **** ****')
+		LOGGER.info('\n\n\t**** **** **** **** ATTIC PROCESS BEGINING **** **** **** ****')
 
 	if abspath == '':
 		LOGGER.warning('\n\tBAD PATH; CANNOT ATTIC;\n\t\tPATH: `%s`', s)
@@ -63,8 +63,50 @@ def attic(s, **kwargs):
 		LOGGER.info('\n\tPOPULATED %s ITEMS', str(cnt))
 
 	if FLAGS['isQuite'] == False:
-		LOGGER.info('\n\t**** **** **** **** ATTIC PROCESS COMPLETE **** **** **** ****')
+		LOGGER.info('\n\t**** **** **** **** ATTIC PROCESS COMPLETE **** **** **** ****\n\n')
 	for key,value in OFLAGS.items():
 		FLAGS[key] = value
 	return cnt
 
+if __name__ == "__main__":
+	#Called directly, should have arguments...
+	fullCmdArguments = sys.argv
+
+	# - further arguments
+	argumentList = fullCmdArguments[1:]
+	reqs	= []
+
+	# - Argument Processing
+	for arg in argumentList:
+		isFlag = re.search(FLAG_RE, arg)
+		if isFlag:
+			if arg in ("-v", "--verbose"):
+				if FLAGS['isQuite'] == False:
+					LOGGER.info("\n\tEnabling verbose mode")
+				FLAGS['isVerbose'] = True
+			elif arg in ("-h", "--help"):
+				#TODO: Make a helper function O.o
+				LOGGER.info("\n\tFor current help please email at Tanner.L.Woody@gmail.com")
+				sys.exit(0)
+			elif arg in ("-q", "--quite"):
+				FLAGS['isQuite'] = True
+				#LOGGER.info("\n\tOutput to stdout disabled;")
+			else:
+				if FLAGS['isQuite'] == False:
+					LOGGER.warning("\n\tArgument not recgonized: %s" %arg)
+		else:
+			reqs.append(arg)
+
+	# - Function Calls
+	if len(reqs) == 0:
+		LOGGER.error('\n\t/pytils/src/attic.py: No argment provided to attic')
+		sys.exit(0)
+	elif len(reqs) == 1:
+		attic(reqs[0])
+		#LOGGER.info('\n\tTEST CALLS:\n\t%s',reqs[0])
+	else:	
+		msg = '\n\t/pytils/src/attic.py: TOO MANY ARGUMENTS:'
+		for arg in reqs:
+			msg += '\n\t\tARG:\t%s'%arg
+		LOGGER.error(msg)
+		sys.exit(0)
