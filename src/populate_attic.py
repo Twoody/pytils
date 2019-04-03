@@ -7,8 +7,15 @@ def populate_attic(s, **kwargs):
 		If s is dir, recurse through for all content 
 		If s is file, populate single item;
 	'''
-	dt  = iso()
-	cnt = 0
+	#TODO: Arg for milliseconds to be turned off
+	dt   = iso()
+	dt	  = dt.replace('-','')
+	dt	  = dt.replace(':','-')
+	date = re.sub(ISO_RE, r'\1', dt)
+	time = re.sub(ISO_RE, r'\3', dt)
+	dt	  = dt.replace('T','_')
+
+	cnt  = 0
 	if os.path.isfile(s):
 		file_to_attic = ATTIC + '/' + s + '.' + dt
 		if not os.path.isdir(ATTIC + "/" + os.path.dirname(s)):
