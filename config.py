@@ -12,6 +12,7 @@ from glob import glob
 #GENERAL GLOBAL VARIABLES
 ISO_RE = r'^(.*)(T)(.*)$'
 LOG_RE = r'^(.*)log(\.\d{1,2}){0,1}$'
+FLAG_RE = r'^-{1,2}(.*)$'
 
 THIS_FILE=os.path.realpath( __file__ )
 HOME=os.path.expanduser("~")
