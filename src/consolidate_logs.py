@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from pytils.config import *
+#TODO: Major bug in printing to logs while also consolidating them;
+#			Need to remove all of the logs before I start to write to stdout
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''
@@ -99,8 +101,11 @@ def consolidate_logs(d=None, **kwargs):
 						LOGGER.info('\n\tWROTE TO:\n\t\t%s', myfile)
 			if FLAGS['isQuite'] == False:
 				LOGGER.info('\n\tCONSOLIDATED LOG:\n\t\t%s\n\tREMOVING OLD LOG:\n\t\t%s', newLog, log)
-			#TODO: -p(reserve) logs flag...
-			os.remove(log)
+			if FLAGS['isPreserving'] == False:
+				os.remove(log)
+			else:
+				if FLAGS['isQuite'] == False:
+					LOGGER.info('\n\t^^^^^IS PRESERVING LOGS; FILE NOT REMOVED ^^^^^)\n')
 			ret += 1
 		else:
 			if FLAGS['isQuite'] == False and FLAGS['isVerbose'] == True:
@@ -109,3 +114,48 @@ def consolidate_logs(d=None, **kwargs):
 	for key,value in OFLAGS.items():
 		FLAGS[key] = value
 	return ret
+
+if __name__ == "__main__":
+	print('ok')
+	#Called directly, should have arguments...
+	fullCmdArguments = sys.argv
+
+	# - further arguments
+	argumentList = fullCmdArguments[1:]
+	reqs	= []
+
+	# - Argument Processing
+	for arg in argumentList:
+		isFlag = re.search(FLAG_RE, arg)
+		if isFlag:
+			if arg in ("-v", "--verbose"):
+				if FLAGS['isQuite'] == False:
+					LOGGER.info("\n\tEnabling verbose mode")
+				FLAGS['isVerbose'] = True
+			elif arg in ("-h", "--help"):
+				#TODO: Make a helper function O.o
+				LOGGER.info("\n\tFor current help please email at Tanner.L.Woody@gmail.com")
+				sys.exit(0)
+			elif arg in ("-q", "--quite"):
+				FLAGS['isQuite'] = True
+				#LOGGER.info("\n\tOutput to stdout disabled;")
+			elif arg in ("-p", "--preserve"):
+				FLAGS['isPreserving'] = True
+				#LOGGER.info("\n\tOutput to stdout disabled;")
+			else:
+				if FLAGS['isQuite'] == False:
+					LOGGER.warning("\n\tArgument not recgonized: %s" %arg)
+		else:
+			reqs.append(arg)
+
+	# - Function Calls
+	if len(reqs) == 0:
+		consolidate_logs()
+	elif len(reqs) == 1:
+		consolidate_logs(reqs[0])
+	else:	
+		msg = '\n\t/pytils/src/consolidate_logs.py: TOO MANY ARGUMENTS:'
+		for arg in reqs:
+			msg += '\n\t\tARG:\t%s'%arg
+		LOGGER.error(msg)
+		sys.exit(0)
