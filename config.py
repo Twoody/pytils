@@ -11,6 +11,7 @@ from glob import glob
 THIS_FILE=os.path.realpath( __file__ )
 HOME=os.path.expanduser("~")
 ATTIC=HOME + '/.attic'
+MODULE_PATH=os.path.dirname(THIS_FILE)
 #sys.path.append( HOME + '/utils/python/' )
 
 #Logger to log to path defined in ~/.pylog/config.ini
