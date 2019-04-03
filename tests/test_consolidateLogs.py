@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pytils.config import *
 from pytils.tests.Tests import Tests
+from pytils.src.clean_attic import clean_attic
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''
@@ -23,7 +24,7 @@ def sortLogs(logs):
 	return ret 
 
 
-def consolidate_logs():
+def consolidate_logs(d=None):
 	import re
 	'''Consolidate pylogs into one file.
 	File should be d(ate) and t(ime) stamped;
@@ -40,23 +41,24 @@ def consolidate_logs():
 	#			/dir/ param instead of 	PYLOG_LOGS
 	#			`newLog` to be dynamic
 	#			regex param for when we call `sortLogs`
-	D
 	ret = 0
+	if d == None:
+		d = PYLOG_LOGS
 	if HAS_PYLOGS == False:
 		return -1
 	dt  = iso()
-	src = PYLOG_LOGS + '/' + dt
+	src = d + '/' + dt
 	if os.path.isdir(src):
 		if FLAGS['isQuite'] == False:
 			LOGGER.warning('\n\tLOGS ALREADY CONSOLIDATED FOR DAY')
 		ret = -1
 	else:
-		newLog = PYLOG_LOGS + '/' + dt + '.log'
-		curLogs = os.listdir(PYLOG_LOGS)
+		newLog = d + '/' + dt + '/consolidated.log'
+		curLogs = os.listdir(d)
 		os.mkdir(src)							#GET JUST LOGS BEFORE MAKING DIR
 		myLogs = []
 		for i in range(0, len(curLogs)):
-			_log = PYLOG_LOGS + "/" + curLogs[i]
+			_log = d + "/" + curLogs[i]
 			if not os.path.isfile(_log):
 				continue
 			myLogs.append(_log)
@@ -67,7 +69,7 @@ def consolidate_logs():
 				print('good log: ' + log)
 				with open(log,'r') as fh:
 					all_lines = fh.readlines()
-					with open(src+'/'+dt+'.log', "a") as myfile:
+					with open(newLog, "a") as myfile:
 						for line in all_lines:
 					 		myfile.write(line)
 				os.remove(log)
@@ -76,12 +78,34 @@ def consolidate_logs():
 				print('bad log: ' + log)
 	return ret
 
-
 def test_consolidate():
-	if consolidate_logs() >0:
-		return True
-	return False
+	d = MODULE_PATH + '/foo'
+	init_testEnv(d)
+	ret = True
+	if consolidate_logs(d) <1:
+		ret = False
+	#TODO: clean up from testing...
+	clean_attic(d)
+	return ret
 
+def init_testEnv(d):
+	from pathlib import Path
+	#TODO: Make these paths relevant to pytils package...
+	s1 = 'This is the first string'
+	s2 = '\tThis is a second string.'
+	s3 = '\t\tAll done with a third string.'
+	f1 = d + '/x.log'
+	f2 = d + '/y.log'
+	f3 = d + '/z.log'
+	dest = d + '/logs/'
+	if not os.path.exists(d+'/foo'):
+		os.mkdir(d)
+	Path(f1).touch()
+	Path(f2).touch()
+	Path(f3).touch()
+	suc = consolidate_logs(d)	#Will make a d(ate)t(ime) dir we can verify in `d`;
+	Path(d+"/IS_SAFE_TO_DELETE.txt").touch()
+	return True
 def tests():
 	#TODO: test ./ ../ ../file.txt ./file.txt etc.
 	mod         = "xxx.py" #module
