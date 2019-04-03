@@ -36,7 +36,9 @@ if __name__ == "__main__":
 	import test_getAbsPath
 	import test_setHome
 	import test_attic
+	import test_consolidateLogs
 	test_imports.tests()
 	test_setHome.tests()
 	test_getAbsPath.tests()
 	test_attic.tests()
+	test_consolidateLogs.tests()
