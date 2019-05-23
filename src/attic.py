@@ -6,7 +6,6 @@ from pytils.src.setup_dir import setup_dir
 from pytils.src.build_attic import build_attic
 from pytils.src.populate_attic import populate_attic
 def attic(s, **kwargs):
-
 	OFLAGS={}									#GOING TO REVERT BACK TO DEFAULT AT END;
 	if kwargs is not None:
 		for key, value in kwargs.items():
