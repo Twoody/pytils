@@ -17,8 +17,8 @@ def init_testEnv(d):
 	f2 = d + '/y.log'
 	f3 = d + '/z.log'
 
-	fs = [f1,f2,f3]
-	ss = [s1,s2,s3]
+	fs = [f1,f2,f3] #[f]iles
+	ss = [s1,s2,s3] #[s]trings
 	#TODO: dest support
 	dest = d + '/logs/'
 	if not os.path.exists(d):
