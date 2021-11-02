@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pytils.config import *
+from config import *
 def setup_dir(d):
 	''' Setup ~/.attic/ directory based on user input'''
 	#TODO: Recursion?

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.tests.Tests import Tests
-from pytils.src.clean_attic import clean_attic
-from pytils.src.consolidate_logs import consolidate_logs
+from config import *
+from tests.Tests import Tests
+from src.clean_attic import clean_attic
+from src.consolidate_logs import consolidate_logs
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''

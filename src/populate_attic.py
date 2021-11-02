@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.src.build_attic import build_attic
+from config import *
+from src.build_attic import build_attic
 def populate_attic(s, **kwargs):
 	'''
 	Populate ~/.attic/ with all items from s(ource);

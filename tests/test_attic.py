@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.tests.Tests import Tests
-from pytils.src.get_abs_path import get_abs_path
-from pytils.src.clean_attic import clean_attic
-from pytils.src.attic import attic
+from config import *
+from tests.Tests import Tests
+from src.get_abs_path import get_abs_path
+from src.clean_attic import clean_attic
+from src.attic import attic
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''

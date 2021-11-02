@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pytils.config import *
+from config import *
 def has_attic():
 	''' True if ~/.attic/; Else False'''
 	if os.path.isdir(ATTIC):

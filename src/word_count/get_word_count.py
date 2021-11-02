@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pytils.config import *
 from pytils.src.get_abs_path import get_abs_path
+import string
 import os
 def make_dictionary(txt, args=None):
  dic = {}
@@ -9,6 +10,7 @@ def make_dictionary(txt, args=None):
    words = line.split()
    for word in words:
     word = word.lower()
+    word.translate(str.maketrans('', '', string.punctuation))
     if word not in dic:
      dic[word] = 1
     else:
@@ -23,34 +25,31 @@ def get_word_count(txt, args=None):
 
    The outputted json file will be our dictionary;
  '''
- cwd       = os.getcwd()
  show_top  = 20
- iFile     = cwd + '/' + txt
- msg       = '\n\tTARGET FILE:\t' + iFile
+ msg       = '\n\tTARGET FILE:\t' + txt 
  if not os.path.isfile(txt):
   msg += "\n\tERROR: INVALID ARG: NOT A FILE"
   return msg
  if txt[-4:] != ".txt":
   msg += "\n\tERROR: CAN ONLY READ FROM TEXT FILES"
   return msg
- mac_dic   = make_dictionary(iFile)
- dest_path = cwd + "/" + txt[:-4]+ ".json"
- suc       = make_json(mac_dic, dest_path)
+ mac_dic   = make_dictionary(txt)
+ dest_path = txt[:-4]+ ".json"
+ msg += '\n\tFOUND FILE'
+ msg += '\n\tSORTING DIC'
+ dSorted = sorted(mac_dic.items(), key=operator.itemgetter(1))
+ dSorted.reverse()
+ msg += '\n\tDONE SORTING DIC'
+ msg += '\n\t\tWORD COUNT:\t' + str(len(mac_dic))
+ msg += '\n\t\t'+str(show_top)+' Top Words:'
+ for i in range(0, show_top):
+  word  = str(dSorted[i][0])
+  count = str(dSorted[i][1])
+  msg += '\n\t\t\t' + str(i+1) + '.\t'
+  msg += '`' + word + '`\tAPPEARS '+count+' TIMES'
+ suc = make_json(dSorted, dest_path)
  if suc == False:
   msg += '\n\tBAD RUN; BAILING'
- else:
-  msg += '\n\tFOUND FILE'
-  msg += '\n\tSORTING DIC'
-  dSorted = sorted(mac_dic.items(), key=operator.itemgetter(1))
-  dSorted.reverse()
-  msg += '\n\tDONE SORTING DIC'
-  msg += '\n\t\tWORD COUNT:\t' + str(len(mac_dic))
-  msg += '\n\t\t'+str(show_top)+' Top Words:'
-  for i in range(0, show_top):
-   word  = str(dSorted[i][0])
-   count = str(dSorted[i][1])
-   msg += '\n\t\t\t' + str(i+1) + '.\t'
-   msg += '`' + word + '`\tAPPEARS '+count+' TIMES'
  msg += '\n\tFINISHED\n'
  return msg
 

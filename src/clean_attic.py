@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pytils.config import *
+from config import *
 def clean_attic(s, **kwargs):
 	'''
 		Nuke contents; rm -rf of s(ource)

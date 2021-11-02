@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pytils.config import *
+from config import *
 #TODO: Major bug in printing to logs while also consolidating them;
 #			Need to remove all of the logs before I start to write to stdout
 '''

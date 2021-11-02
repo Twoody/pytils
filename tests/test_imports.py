@@ -1,4 +1,4 @@
-from pytils.config import *
+from config import *
 def test_logger():
 	try:
 		x = LOGGER.debug('Just a test')
@@ -16,7 +16,7 @@ def test_home():
 
 def tests():
 	#from tests import Tests
-	from pytils.tests.Tests import Tests
+	from tests.Tests import Tests
 	mod         = "__init__.py" #module
 	ts          = [
 				test_logger(),

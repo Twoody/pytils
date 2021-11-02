@@ -1,4 +1,4 @@
-from pytils.config import *
+from config import *
 
 
 class Tests:

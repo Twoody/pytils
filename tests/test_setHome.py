@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.src.set_home import set_home
-from pytils.tests.Tests import Tests
+from config import *
+from src.set_home import set_home
+from tests.Tests import Tests
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''

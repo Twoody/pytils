@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pytils.config import HOME
+from config import HOME
 '''
 Author:
 	Tanner.L.Woody@gmail.com

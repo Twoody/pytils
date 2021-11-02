@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.src.get_abs_path import get_abs_path
-from pytils.tests.Tests import Tests
+from config import *
+from src.get_abs_path import get_abs_path
+from tests.Tests import Tests
 '''
 	THIS IS A GOOD PLACE FOR DOCUMENTATION
 '''

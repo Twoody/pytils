@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.src.get_abs_path import get_abs_path
-from pytils.src.has_attic import has_attic
-from pytils.src.setup_dir import setup_dir
-from pytils.src.build_attic import build_attic
-from pytils.src.populate_attic import populate_attic
+from config import *
+from src.get_abs_path import get_abs_path
+from src.has_attic import has_attic
+from src.setup_dir import setup_dir
+from src.build_attic import build_attic
+from src.populate_attic import populate_attic
 def attic(s, **kwargs):
 	OFLAGS={}									#GOING TO REVERT BACK TO DEFAULT AT END;
 	if kwargs is not None:

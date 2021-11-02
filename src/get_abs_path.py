@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.src.set_home import set_home
+from config import *
+from src.set_home import set_home
 '''
 Author:
 	Tanner.L.Woody@gmail.com

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pytils.config import *
+from config import *
 def build_attic(s, **kwargs):
 	'''
 		Build attic directory around s(ource);
