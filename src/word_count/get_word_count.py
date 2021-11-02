@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from pytils.config import *
-from pytils.src.get_abs_path import get_abs_path
+from config import *
+from src.get_abs_path import get_abs_path
 import string
 import os
 def make_dictionary(txt, args=None):
